@@ -1,16 +1,14 @@
 const express = require("express");
 const app = express();
-const { connectDB } = require("./database");
-const { Dictionnaire } = require("./models/Dictionnaire");
+const connectDB = require("./database");
+const Dictionnaire = require("./models/Dictionnaire");
 const port = 3000;
 
 // Connexion à MongoDb (la base de données)
-connectDB().catch((err) => {
-  console.error("Erreur de connexion :", err);
-});
+connectDB();
 
 // get signe par mot
-app.get("/dictionnaire/signe", async (req, res) => {
+app.get("/dictionnaire/signe/:mot", async (req, res) => {
   try {
     const mot = req.params.mot;
     const signe = await Dictionnaire.findOne({ mot: mot });
