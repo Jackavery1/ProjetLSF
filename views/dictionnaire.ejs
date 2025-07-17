@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Recherche LSF</title>
+  </head>
+  <body>
+    <h1>Rechercher un mot en LSF</h1>
+
+    <form action="/dictionnaire" method="GET">
+      <input
+        type="text"
+        name="mot"
+        placeholder="Entrez un mot..."
+        value="<%= motRecherche %>"
+        required
+      />
+      <button type="submit">Rechercher</button>
+    </form>
+
+    <% if (erreur) { %>
+    <p style="color: red"><%= erreur %></p>
+    <% } %> <% if (resultat) { %>
+    <h2>Résultat :</h2>
+    <p><strong><%= resultat.mot %></strong> - <%= resultat.categorie %></p>
+    <p><%= resultat.definition %></p>
+    <% if (resultat.video) { %>
+    <video width="320" controls>
+      <source src="<%= resultat.video %>" type="video/mp4" />
+    </video>
+    <% } %> <% } %>
+  </body>
+</html>
