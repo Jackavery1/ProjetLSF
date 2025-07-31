@@ -1,0 +1,14 @@
+[
+  {
+    "mot": "bonjour",
+    "categorie": "salutation",
+    "definition": "Formule de salutation utilisée dans la journée.",
+    "video": "https://cdn.elix-lsf.fr/videos/dico/b/bonjour.mp4"
+  },
+  {
+    "mot": "merci",
+    "categorie": "politesse",
+    "definition": "Expression de remerciement.",
+    "video": "https://cdn.elix-lsf.fr/videos/dico/m/merci.mp4"
+  }
+]

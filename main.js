@@ -1,29 +1,25 @@
 const express = require("express");
-const app = express();
-const connectDB = require("./database/database");
-const port = 3001;
 const path = require("path");
-const router = require("./routes/router");
-const Dictionnaire = require("./models/Dictionnaire");
-const dicoController = require("./controllers/dicoController");
+const app = express();
+const port = 3000;
 
-// Connexion à MongoDb (la base de données)
-connectDB();
-
-// Configuration EJS
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Configuration des fichiers statiques
-app.use(express.static(path.join(__dirname, "public")));
+// Routes
+const router = require("./routes/router");
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-// Utilisation du routeur
+//Utilisation router
 app.use("/", router);
 
-//Connexion Localhost
+// Connexion MongoDB + import
+const initDB = require("./database/database");
+initDB();
+
+// Connexion localhost
 app.listen(port, () => {
-  console.log(`Serveur démarré sur le port ${port}`);
+  console.log(`🚀 Serveur lancé : http://localhost:${port}`);
 });

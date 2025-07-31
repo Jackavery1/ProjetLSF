@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Dictionnaire = require("../models/Dictionnaire");
-const data = require("../public/data");
+const data = require("./vocabulaire.json");
 
 // Connexion à MongoDB
 module.exports = async () => {
