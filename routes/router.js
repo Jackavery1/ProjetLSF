@@ -4,7 +4,7 @@ const dicoController = require("../controllers/dicoController");
 
 // Router Accueil
 router.get("/", (req, res) => {
-  res.send("Bienvenue sur l’API Projet LSF");
+  res.render("accueil");
 });
 
 //Router Dico
