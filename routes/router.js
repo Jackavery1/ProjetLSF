@@ -10,4 +10,12 @@ router.get("/", (req, res) => {
 //Router Dico
 router.get("/dictionnaire", dicoController.show);
 
+// Ajout de mot Dico
+router.post("/api/mots", dicoController.add);
+
+//Router ressources
+router.get("/ressources", (req, res) => {
+  res.render("ressources");
+});
+
 module.exports = router;
