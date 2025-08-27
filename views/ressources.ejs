@@ -259,12 +259,28 @@
       <!-- Grille -->
       <ul id="ressourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <% (ressources || []).forEach((r, i) => { %>
-        <li
-          class="resCard group rounded-2xl border border-neutral-200 bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
+          <li
+          class="resCard group relative rounded-2xl border border-neutral-200 bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
           data-title="<%= (r.titre || '').toLowerCase() %>"
           data-desc="<%= (r.description || '').toLowerCase() %>"
           data-cat="<%= (r.categorie || 'Autre') %>"
         >
+          <!-- Bouton suppression (croix) -->
+          <form 
+            action="/api/ressources/<%= r._id %>" 
+            method="POST"
+            class="absolute top-2 right-2"
+            onsubmit="return confirm('Supprimer cette ressource ?');"
+          >
+            <button 
+              type="submit" 
+              class="text-gray-400 hover:text-red-600 bg-white/70 rounded-full p-1 shadow"
+              title="Supprimer"
+            >
+              ✖
+            </button>
+          </form>
+        
           <div class="p-5">
             <div class="flex items-center justify-between gap-3">
               <span
@@ -274,19 +290,19 @@
               </span>
               <span class="opacity-60 text-xs">#<%= i+1 %></span>
             </div>
-
+        
             <h3
               class="mt-3 text-lg font-bold text-[color:var(--brand-primary)] group-hover:underline underline-offset-4"
             >
               <%= r.titre %>
             </h3>
-
+        
             <% if (r.description) { %>
             <p class="mt-1.5 text-[15px] text-neutral-700 line-clamp-3">
               <%= r.description %>
             </p>
             <% } %>
-
+        
             <div class="mt-4 flex items-center justify-between">
               <a
                 href="<%= r.lien %>"
@@ -295,32 +311,19 @@
                 class="inline-flex items-center gap-2 rounded-lg bg-[color:var(--brand-teal)] px-3 py-2 text-white text-sm font-semibold shadow hover:bg-[#00928e] focus:outline-none focus:ring-4 focus:ring-[color:var(--brand-teal)]/30"
               >
                 Accéder
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M12.293 2.293a1 1 0 011.414 0l4 4a.997.997 0 01.083 1.32l-.083.094-4 4a1 1 0 01-1.497-1.32l.083-.094L14.586 8H9a1 1 0 01-.993-.883L8 7a1 1 0 011-1h5.586l-2.293-2.293a1 1 0 010-1.414z"
-                  />
-                  <path
-                    d="M6 4a2 2 0 012 2v7h6a2 2 0 012 2v1H4a2 2 0 01-2-2V6a2 2 0 012-2h2z"
-                  />
-                </svg>
               </a>
             </div>
           </div>
+        
           <!-- bandeau déco -->
-          <div
-            class="h-1 bg-gradient-to-r from-[color:var(--brand-teal)] via-[#ffd9d5] to-[color:var(--brand-primary)]"
-          ></div>
+          <div class="h-1 bg-gradient-to-r from-[color:var(--brand-teal)] via-[#ffd9d5] to-[color:var(--brand-primary)]"></div>
         </li>
+        
         <% }) %>
       </ul>
       <% } %>
       <!-- Formulaire d'ajout -->
-<section class="bg-white rounded-xl p-4 shadow-lg mb-12">
+<section class="bg-white rounded-xl p-4 shadow-lg mt-12">
   <h3 class="text-2xl font-semibold text-[#00a8a3] mb-4">
     Ajouter une ressource
   </h3>

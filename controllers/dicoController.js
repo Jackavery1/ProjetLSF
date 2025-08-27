@@ -1,39 +1,28 @@
-// controllers/dicoController.js
 const Dictionnaire = require("../models/Dictionnaire");
 
-/**
- * GET /dictionnaire
- * - Affiche la page du dictionnaire
- * - Si ?mot=... est présent, fait une recherche insensible à la casse
- */
+// Contrôleur pour afficher le dictionnaire
 const show = async (req, res) => {
-  // 1) Récupération du terme recherché (optionnel)
-  const motRechercher = (req.query.mot || "").trim();
-
   try {
-    let resultats = [];
+    const { mot } = req.query; // mot recherché (optionnel)
 
-    // 2) Recherche seulement si un terme est fourni
-    if (motRechercher) {
-      console.log("🔎 Recherche pour :", motRechercher);
-
-      // Recherche insensible à la casse (regex "i")
-      resultats = await Dictionnaire.find({
-        mot: { $regex: new RegExp(motRechercher, "i") },
+    // Si pas de terme recherché -> n'affiche rien (pas de find({}))
+    if (!mot || !mot.trim()) {
+      return res.render("dictionnaire", {
+        resultats: undefined, // laisse la vue décider de n'afficher aucun bloc
+        siteTitle: "LSF - Dictionnaire",
       });
-
-      console.log("➡️ Résultats trouvés :", resultats.length);
     }
 
-    // 3) Rendu de la page (toujours passer un tableau)
+    // Recherche insensible à la casse si un terme est fourni
+    const filtre = { mot: { $regex: new RegExp(mot.trim(), "i") } };
+    const resultats = await Dictionnaire.find(filtre).lean();
+
     res.render("dictionnaire", {
       resultats,
       siteTitle: "LSF - Dictionnaire",
     });
   } catch (err) {
-    console.error("❌ Erreur GET /dictionnaire :", err);
-
-    // En cas d’erreur, on affiche quand même la page (sans planter)
+    console.error("Erreur lors de la récupération du dictionnaire :", err);
     res.render("dictionnaire", {
       resultats: [],
       siteTitle: "LSF - Dictionnaire",
@@ -74,4 +63,11 @@ const add = async (req, res) => {
   }
 };
 
-module.exports = { show, add };
+//Contrôlur pour supprimer mot Dico
+const remove = async (req, res) => {
+  const { id } = req.params;
+  await Dictionnaire.findByIdAndDelete(id);
+  res.redirect("/dictionnaire");
+};
+
+module.exports = { show, add, remove };

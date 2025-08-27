@@ -44,4 +44,11 @@ const add = async (req, res) => {
   }
 };
 
-module.exports = { index, add };
+//Contrôlur pour supprimer ressources
+const remove = async (req, res) => {
+  const { id } = req.params;
+  await Ressource.findByIdAndDelete(id);
+  res.redirect("/ressources");
+};
+
+module.exports = { index, add, remove };
