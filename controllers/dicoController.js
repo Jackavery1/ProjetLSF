@@ -1,68 +1,77 @@
+// controllers/dicoController.js
 const Dictionnaire = require("../models/Dictionnaire");
 
-// Contrôleur pour afficher la page du dictionnaire
+/**
+ * GET /dictionnaire
+ * - Affiche la page du dictionnaire
+ * - Si ?mot=... est présent, fait une recherche insensible à la casse
+ */
 const show = async (req, res) => {
-  const mot = req.query.mot;
+  // 1) Récupération du terme recherché (optionnel)
+  const motRechercher = (req.query.mot || "").trim();
 
   try {
     let resultats = [];
 
-    // Si un mot est recherché, on effectue une recherche insensible à la casse
-    if (mot) {
+    // 2) Recherche seulement si un terme est fourni
+    if (motRechercher) {
+      console.log("🔎 Recherche pour :", motRechercher);
+
+      // Recherche insensible à la casse (regex "i")
       resultats = await Dictionnaire.find({
-        mot: { $regex: new RegExp(mot, "i") },
+        mot: { $regex: new RegExp(motRechercher, "i") },
       });
+
+      console.log("➡️ Résultats trouvés :", resultats.length);
     }
 
-    // On envoie toujours un tableau "resultats" (vide ou non) pour éviter toute erreur dans la vue
+    // 3) Rendu de la page (toujours passer un tableau)
     res.render("dictionnaire", {
       resultats,
-      siteTitle: "LSF Express",
+      siteTitle: "LSF - Dictionnaire",
     });
   } catch (err) {
-    console.error("Erreur lors de la recherche :", err);
+    console.error("❌ Erreur GET /dictionnaire :", err);
 
-    // En cas d’erreur, on affiche la page sans plantage
+    // En cas d’erreur, on affiche quand même la page (sans planter)
     res.render("dictionnaire", {
       resultats: [],
-      siteTitle: "LSF Express",
+      siteTitle: "LSF - Dictionnaire",
     });
   }
 };
 
-// Contrôleur pour ajouter un mot au dictionnaire
 const add = async (req, res) => {
   const { mot, definition, categorie, video } = req.body;
 
-  // Vérifie que les champs essentiels sont remplis
+  // Vérification des champs obligatoires
   if (!mot || !definition) {
-    return res.status(400).send("Mot et définition requis.");
+    return res.status(400).send("Mot et définition sont requis.");
   }
 
   try {
-    // Empêche l'ajout d'un mot déjà existant
-    const existe = await Dictionnaire.findOne({ mot });
+    // Vérifie si le mot existe déjà (insensible à la casse)
+    const existe = await Dictionnaire.findOne({
+      mot: { $regex: new RegExp("^" + mot + "$", "i") },
+    });
     if (existe) {
       return res.status(409).send("Ce mot existe déjà.");
     }
 
-    // Ajoute le nouveau mot à la base
+    // Création du document
     await Dictionnaire.create({
-      mot,
-      definition,
-      categorie,
-      video: video, // Attention : le champ dans le modèle est bien "lien_video"
+      mot: String(mot).trim(),
+      definition: String(definition || "").trim(),
+      categorie: String(categorie || "Général").trim(),
+      video: String(video || "").trim(),
     });
 
-    // Redirection vers la recherche du mot ajouté
-    res.redirect("/dictionnaire?mot=" + encodeURIComponent(mot));
+    // Redirection vers la liste dictionnaire (comme ressController fait vers /ressources)
+    res.redirect("/dictionnaire");
   } catch (err) {
     console.error("Erreur ajout mot :", err);
     res.status(500).send("Erreur serveur.");
   }
 };
 
-module.exports = {
-  show,
-  add,
-};
+module.exports = { show, add };

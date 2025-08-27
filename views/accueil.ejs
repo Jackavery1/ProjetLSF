@@ -7,7 +7,7 @@
 
     <!-- Import Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Import d'une police similaire à Open Sans -->
+    <!-- Import police -->
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
@@ -23,30 +23,110 @@
   </head>
 
   <body>
-    <!-- 🔶 Barre de navigation -->
-    <nav class="bg-[#f46b5e] text-white shadow">
-      <div
-        class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center"
-      >
-        <h1 class="text-lg md:text-xl font-bold">
-          Langue des Signes Française
-        </h1>
-        <ul class="flex space-x-4 text-sm md:text-base">
-          <li><a href="/" class="hover:underline">Accueil</a></li>
-          <li>
-            <a href="/dictionnaire" class="hover:underline">Dictionnaire</a>
-          </li>
-          <li><a href="/quiz" class="hover:underline">Quiz</a></li>
-          <li><a href="/ressources" class="hover:underline">Ressources</a></li>
-        </ul>
+    <!-- Barre de navigation -->
+    <nav
+      class="sticky top-0 z-50 backdrop-blur bg-[#f46b5e]/95 text-white shadow"
+    >
+      <div class="mx-auto max-w-7xl px-4 py-1">
+        <div class="flex h-14 items-center justify-between">
+          <!-- Logo / Titre -->
+          <h1 class="text-lg md:text-xl font-bold">
+            <a href="/" class="hover:text-white/80"
+              >Langue des Signes Française</a
+            >
+          </h1>
+
+          <!-- Liens Desktop -->
+          <ul class="hidden items-center gap-6 text-sm md:flex">
+            <li><a href="/" class="hover:opacity-90">Accueil</a></li>
+            <li>
+              <a href="/dictionnaire" class="hover:opacity-90">Dictionnaire</a>
+            </li>
+            <li><a href="/quizz" class="hover:opacity-90">Quizz</a></li>
+            <li>
+              <a href="/ressources" class="hover:opacity-90">Ressources</a>
+            </li>
+          </ul>
+
+          <!-- Menu Mobile (details/summary) -->
+          <details class="relative md:hidden group">
+            <summary
+              class="list-none cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 hover:bg-white/25"
+              aria-label="Ouvrir le menu"
+            >
+              <!-- Icône burger -->
+              <svg
+                class="h-5 w-5 group-open:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+              <!-- Icône quand open -->
+              <svg
+                class="hidden h-5 w-5 group-open:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </summary>
+
+            <!-- Dropdown Mobile -->
+            <div
+              class="absolute right-0 mt-2 w-56 rounded-xl bg-[#f46b5e] shadow-lg ring-1 ring-black/10"
+            >
+              <ul class="grid gap-1 p-2 text-sm">
+                <li>
+                  <a href="/" class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Accueil</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/dictionnaire"
+                    class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Dictionnaire</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/quizz"
+                    class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Quizz</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/ressources"
+                    class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Ressources</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </details>
+        </div>
       </div>
     </nav>
 
-    <!-- 🔷 Section centrale -->
+    <!--  Section centrale -->
     <header
       class="bg-[#fff3eb] flex flex-col md:flex-row items-center justify-between px-6 py-12 md:py-20 max-w-7xl mx-auto"
     >
-      <!-- 📝 Texte -->
+      <!--  Texte -->
       <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8 textecentral">
         <h2 class="text-3xl md:text-4xl font-bold text-[#00a8a3]">
           Apprenez la Langue des Signes Française
@@ -63,7 +143,7 @@
         </a>
       </div>
 
-      <!-- 🖼️ Image -->
+      <!--  Image -->
       <div class="md:w-1/2 text-center imagecentrale">
         <img
           src="/images/imagecentrale.png"
@@ -73,15 +153,15 @@
       </div>
     </header>
 
-    <!-- 🟡 Cartes interactives -->
+    <!--  Cartes interactives -->
     <section class="py-12 px-4 max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- 📚 Dictionnaire -->
+        <!--  Dictionnaire -->
         <div
           class="bg-[#00a8a3] text-white rounded-xl p-6 text-center shadow hover:shadow-xl transition"
         >
           <img
-            src="/assets/img/icones/dictionnaire.png"
+            src="/images/dictionnaire.png"
             alt="Dico"
             class="mx-auto mb-4 h-14"
           />
@@ -89,25 +169,21 @@
           <p>Recherchez des mots et apprenez leurs signes en LSF.</p>
         </div>
 
-        <!-- 🧠 Quiz -->
+        <!--  Quiz -->
         <div
           class="bg-[#fdd049] text-gray-800 rounded-xl p-6 text-center shadow hover:shadow-xl transition"
         >
-          <img
-            src="/assets/img/icones/quiz.png"
-            alt="Quiz"
-            class="mx-auto mb-4 h-14"
-          />
+          <img src="/images/quizz.png" alt="Quiz" class="mx-auto mb-4 h-14" />
           <h3 class="text-xl font-bold mb-2">🧠 Quiz</h3>
           <p>Testez vos connaissances avec des quiz interactifs.</p>
         </div>
 
-        <!-- 🔗 Ressources -->
+        <!--  Ressources -->
         <div
           class="bg-[#00a8a3] text-white rounded-xl p-6 text-center shadow hover:shadow-xl transition"
         >
           <img
-            src="/assets/img/icones/ressources.png"
+            src="/images/ressources.png"
             alt="Ressources"
             class="mx-auto mb-4 h-14"
           />
@@ -117,7 +193,7 @@
       </div>
     </section>
 
-    <!-- 🔚 Footer -->
+    <!--  Footer -->
     <footer class="text-center text-sm text-gray-500 py-6">
       © 2025 - Projet éducatif LSF • Réalisé par Joris
     </footer>

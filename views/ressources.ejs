@@ -1,45 +1,437 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Import Tailwind CSS -->
+    <!-- Tailwind (browser) -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Import d'une police similaire à Open Sans -->
+    <!-- Import police -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Document</title>
+    <title>LSF - Ressources</title>
+
+    <style>
+      :root {
+        --brand-primary: #f46b5e;
+        --brand-teal: #00a8a3;
+        --bg: #fcf6f0;
+        --ink: #2b2b2b;
+      }
+      body {
+        background-color: var(--bg);
+        color: var(--ink);
+        font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+      }
+      /* jolis scrollbars (optionnel) */
+      ::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e7d9cc;
+        border-radius: 999px;
+      }
+    </style>
   </head>
+
   <body>
-    <!-- Exemple de liste stylisée pour ressources.ejs ou quizz.ejs -->
-    <section class="max-w-3xl mx-auto my-12">
-      <h2 class="text-3xl font-bold text-center text-[#00a8a3] mb-8">
-        📚 Ressources utiles
-      </h2>
-      <ul class="space-y-6">
-        <% ressources.forEach(ressource => { %>
-        <li
-          class="bg-white rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-        >
+    <!-- Barre de navigation -->
+    <nav
+      class="sticky top-0 z-50 backdrop-blur bg-[#f46b5e]/95 text-white shadow"
+    >
+      <div class="mx-auto max-w-7xl px-4 py-1">
+        <div class="flex h-14 items-center justify-between">
+          <!-- Logo / Titre -->
+          <h1 class="text-lg md:text-xl font-bold">
+            <a href="/" class="hover:text-white/80"
+              >Langue des Signes Française</a
+            >
+          </h1>
+
+          <!-- Liens Desktop -->
+          <ul class="hidden items-center gap-6 text-sm md:flex">
+            <li><a href="/" class="hover:opacity-90">Accueil</a></li>
+            <li>
+              <a href="/dictionnaire" class="hover:opacity-90">Dictionnaire</a>
+            </li>
+            <li><a href="/quizz" class="hover:opacity-90">Quizz</a></li>
+            <li>
+              <a href="/ressources" class="hover:opacity-90">Ressources</a>
+            </li>
+          </ul>
+
+          <!-- Menu Mobile (details/summary) -->
+          <details class="relative md:hidden group">
+            <summary
+              class="list-none cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 hover:bg-white/25"
+              aria-label="Ouvrir le menu"
+            >
+              <!-- Icône burger -->
+              <svg
+                class="h-5 w-5 group-open:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+              <!-- Icône quand open -->
+              <svg
+                class="hidden h-5 w-5 group-open:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </summary>
+
+            <!-- Dropdown Mobile -->
+            <div
+              class="absolute right-0 mt-2 w-56 rounded-xl bg-[#f46b5e] shadow-lg ring-1 ring-black/10"
+            >
+              <ul class="grid gap-1 p-2 text-sm">
+                <li>
+                  <a href="/" class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Accueil</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/dictionnaire"
+                    class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Dictionnaire</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/quizz"
+                    class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Quizz</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/ressources"
+                    class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Ressources</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header class="relative overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 py-10 md:py-14">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <h3 class="text-xl font-semibold text-[#f46b5e] mb-1">
-              <%= ressource.titre %>
-            </h3>
-            <p class="text-gray-700 mb-2"><%= ressource.description %></p>
+            <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">
+              📚 Ressources utiles pour apprendre et pratiquer la
+              <span class="text-[color:var(--brand-teal)]">LSF</span>
+            </h1>
+            <p class="mt-3 text-[15px] text-neutral-700">
+              Dictionnaires, cours, vidéos, associations, jeux, cartes… Tout au
+              même endroit.
+            </p>
           </div>
-          <a
-            href="<%= ressource.lien %>"
-            target="_blank"
-            class="inline-block bg-[#00a8a3] hover:bg-[#00928e] text-white px-5 py-2 rounded-lg shadow font-medium transition"
-          >
-            Accéder
-          </a>
+          <div class="relative">
+            <div
+              class="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-[color:var(--brand-teal)]/15 via-[#ffd9d5]/50 to-[color:var(--brand-primary)]/20 blur-2xl"
+            ></div>
+            <div
+              class="rounded-2xl border bg-white/70 backdrop-blur shadow p-5"
+            >
+              <div class="flex items-center gap-3">
+                <span
+                  class="h-10 w-10 rounded-xl bg-[color:var(--brand-primary)]/10 text-[color:var(--brand-primary)] grid place-items-center text-lg"
+                  >🔎</span
+                >
+                <div>
+                  <p class="font-semibold">Astuce</p>
+                  <p class="text-sm text-neutral-600">
+                    Filtre instantané par titre, description ou catégorie.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OUTILS DE RECHERCHE / FILTRES -->
+        <div class="mt-8 grid gap-4">
+          <div class="relative">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Rechercher une ressource (ex. dictionnaire, YouTube, association)…"
+              class="w-full rounded-xl border border-neutral-300/70 bg-white px-4 py-3 shadow-sm focus:outline-none focus:ring-4 focus:ring-[color:var(--brand-teal)]/25"
+            />
+          </div>
+
+          <!-- Filtres catégories -->
+          <div id="filters" class="flex flex-wrap gap-2 text-sm">
+            <!-- Donne à ces boutons data-cat pour filtrer -->
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="all"
+            >
+              Toutes
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Dictionnaires"
+            >
+              Dictionnaires
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Formations"
+            >
+              Formations
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Associations"
+            >
+              Associations
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Livres"
+            >
+              Livres
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Jeux"
+            >
+              Jeux
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Instagram"
+            >
+              Instagram
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="YouTube"
+            >
+              YouTube
+            </button>
+            <button
+              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              data-cat="Cartes & lieux"
+            >
+              Cartes & lieux
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- LISTE DES RESSOURCES -->
+    <main class="max-w-6xl mx-auto px-4 pb-16">
+      <% if (!ressources || ressources.length === 0) { %>
+      <div class="rounded-2xl border bg-white p-8 text-center shadow">
+        <p>Aucune ressource pour le moment.</p>
+      </div>
+      <% } else { %>
+
+      <!-- Grille -->
+      <ul id="ressourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% (ressources || []).forEach((r, i) => { %>
+        <li
+          class="resCard group rounded-2xl border border-neutral-200 bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
+          data-title="<%= (r.titre || '').toLowerCase() %>"
+          data-desc="<%= (r.description || '').toLowerCase() %>"
+          data-cat="<%= (r.categorie || 'Autre') %>"
+        >
+          <div class="p-5">
+            <div class="flex items-center justify-between gap-3">
+              <span
+                class="inline-flex items-center rounded-full bg-[color:var(--brand-teal)]/10 text-[color:var(--brand-teal)] px-3 py-1 text-xs font-semibold"
+              >
+                <%= r.categorie || 'Autre' %>
+              </span>
+              <span class="opacity-60 text-xs">#<%= i+1 %></span>
+            </div>
+
+            <h3
+              class="mt-3 text-lg font-bold text-[color:var(--brand-primary)] group-hover:underline underline-offset-4"
+            >
+              <%= r.titre %>
+            </h3>
+
+            <% if (r.description) { %>
+            <p class="mt-1.5 text-[15px] text-neutral-700 line-clamp-3">
+              <%= r.description %>
+            </p>
+            <% } %>
+
+            <div class="mt-4 flex items-center justify-between">
+              <a
+                href="<%= r.lien %>"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 rounded-lg bg-[color:var(--brand-teal)] px-3 py-2 text-white text-sm font-semibold shadow hover:bg-[#00928e] focus:outline-none focus:ring-4 focus:ring-[color:var(--brand-teal)]/30"
+              >
+                Accéder
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M12.293 2.293a1 1 0 011.414 0l4 4a.997.997 0 01.083 1.32l-.083.094-4 4a1 1 0 01-1.497-1.32l.083-.094L14.586 8H9a1 1 0 01-.993-.883L8 7a1 1 0 011-1h5.586l-2.293-2.293a1 1 0 010-1.414z"
+                  />
+                  <path
+                    d="M6 4a2 2 0 012 2v7h6a2 2 0 012 2v1H4a2 2 0 01-2-2V6a2 2 0 012-2h2z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <!-- bandeau déco -->
+          <div
+            class="h-1 bg-gradient-to-r from-[color:var(--brand-teal)] via-[#ffd9d5] to-[color:var(--brand-primary)]"
+          ></div>
         </li>
         <% }) %>
       </ul>
-    </section>
+      <% } %>
+      <!-- Formulaire d'ajout -->
+<section class="bg-white rounded-xl p-4 shadow-lg mb-12">
+  <h3 class="text-2xl font-semibold text-[#00a8a3] mb-4">
+    Ajouter une ressource
+  </h3>
+  <form
+    action="/api/ressources" 
+    method="POST"
+    class="grid grid-cols-1 md:grid-cols-2 gap-4"
+  >
+    <div>
+      <label class="block mb-1 font-medium">Titre</label>
+      <input
+        type="text"
+        name="titre"
+        required
+        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+      />
+    </div>
+    <div>
+      <label class="block mb-1 font-medium">Description</label>
+      <input
+        type="text"
+        name="description"
+        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+      />
+    </div>
+    <div>
+      <label class="block mb-1 font-medium">Catégorie</label>
+      <input
+        type="text"
+        name="categorie"
+        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+      />
+    </div>
+    <div>
+      <label class="block mb-1 font-medium">Lien</label>
+      <input
+        type="url"
+        name="lien"
+        required
+        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+      />
+    </div>
+    <div class="md:col-span-2 text-right">
+      <button
+        type="submit"
+        class="bg-[#00a8a3] hover:bg-[#00928e] text-white px-6 py-2 rounded-lg shadow"
+      >
+        ➕ Ajouter la ressource
+      </button>
+    </div>
+  </form>
+</section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-sm text-gray-500 py-6">
+      © 2025 - Projet éducatif LSF • Réalisé par Joris
+    </footer>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+      // Recherche + filtres
+      const searchInput = document.getElementById("searchInput");
+      const cards = Array.from(document.querySelectorAll(".resCard"));
+      const catBtns = Array.from(document.querySelectorAll(".catBtn"));
+      let activeCat = "all";
+
+      function applyFilters() {
+        const q = (searchInput?.value || "").trim().toLowerCase();
+        cards.forEach((card) => {
+          const title = card.dataset.title || "";
+          const desc = card.dataset.desc || "";
+          const cat = card.dataset.cat || "Autre";
+          const matchText =
+            !q ||
+            title.includes(q) ||
+            desc.includes(q) ||
+            cat.toLowerCase().includes(q);
+          const matchCat = activeCat === "all" || cat === activeCat;
+          card.style.display = matchText && matchCat ? "" : "none";
+        });
+      }
+
+      searchInput?.addEventListener("input", applyFilters);
+      catBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeCat = btn.dataset.cat;
+          catBtns.forEach((b) =>
+            b.classList.remove(
+              "ring-2",
+              "ring-[color:var(--brand-teal)]/50",
+              "border-[color:var(--brand-teal)]"
+            )
+          );
+          btn.classList.add(
+            "ring-2",
+            "ring-[color:var(--brand-teal)]/50",
+            "border-[color:var(--brand-teal)]"
+          );
+          applyFilters();
+        });
+      });
+      // Marquer "Toutes" active au chargement
+      const defaultBtn = document.querySelector('.catBtn[data-cat="all"]');
+      defaultBtn?.classList.add(
+        "ring-2",
+        "ring-[color:var(--brand-teal)]/50",
+        "border-[color:var(--brand-teal)]"
+      );
+    </script>
   </body>
 </html>
