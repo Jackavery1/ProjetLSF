@@ -25,14 +25,16 @@ const add = async (req, res) => {
     return res.status(400).send("Titre et lien sont requis.");
 
   try {
-    const existe = await Ressource.findOne({ titre });
+    const existe = await Ressource.findOne({
+      titre: { $regex: new RegExp("^" + titre + "$", "i") },
+    });
     if (existe) return res.status(409).send("Cette ressource existe déjà.");
 
     await Ressource.create({
       titre: String(titre).trim(),
       description: String(description || "").trim(),
       lien: String(lien).trim(),
-      categorie: String(categorie || "Autre").trim(),
+      categorie: String(categorie || "Général").trim(),
     });
 
     res.redirect("/ressources");
@@ -44,9 +46,16 @@ const add = async (req, res) => {
 
 //Contrôlur pour supprimer ressources
 const remove = async (req, res) => {
-  const { id } = req.params;
-  await Ressource.findByIdAndDelete(id);
-  res.redirect("/ressources");
+  try {
+    const document = await Ressource.findByIdAndDelete(req.params.id);
+    if (!document) {
+      return res.status(404).send("Ressource introuvable");
+    }
+    res.redirect("/ressources");
+  } catch (err) {
+    console.error("Erreur suppression ressource :", err);
+    res.status(500).send("Erreur de suppression");
+  }
 };
 
 module.exports = { index, add, remove };

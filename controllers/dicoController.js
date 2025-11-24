@@ -62,9 +62,16 @@ const add = async (req, res) => {
 
 //Contrôlur pour supprimer mot Dico
 const remove = async (req, res) => {
-  const { id } = req.params;
-  await Dictionnaire.findByIdAndDelete(id);
-  res.redirect("/dictionnaire");
+  try {
+    const document = await Dictionnaire.findByIdAndDelete(req.params.id);
+    if (!document) {
+      return res.status(404).send("Mot introuvable");
+    }
+    res.redirect("/dictionnaire");
+  } catch (err) {
+    console.error("Erreur suppression mot :", err);
+    res.status(500).send("Erreur de suppression");
+  }
 };
 
 module.exports = { show, add, remove };

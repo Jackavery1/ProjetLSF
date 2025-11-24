@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Tailwind (browser) -->
+    <!-- Tailwind -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Import police -->
     <link
@@ -144,7 +144,7 @@
         <div class="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">
-              📚 Ressources utiles pour apprendre et pratiquer la
+              Ressources utiles pour apprendre et pratiquer la
               <span class="text-[color:var(--brand-teal)]">LSF</span>
             </h1>
             <p class="mt-3 text-[15px] text-neutral-700">
@@ -156,26 +156,10 @@
             <div
               class="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-[color:var(--brand-teal)]/15 via-[#ffd9d5]/50 to-[color:var(--brand-primary)]/20 blur-2xl"
             ></div>
-            <div
-              class="rounded-2xl border bg-white/70 backdrop-blur shadow p-5"
-            >
-              <div class="flex items-center gap-3">
-                <span
-                  class="h-10 w-10 rounded-xl bg-[color:var(--brand-primary)]/10 text-[color:var(--brand-primary)] grid place-items-center text-lg"
-                  >🔎</span
-                >
-                <div>
-                  <p class="font-semibold">Astuce</p>
-                  <p class="text-sm text-neutral-600">
-                    Filtre instantané par titre, description ou catégorie.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        <!-- OUTILS DE RECHERCHE / FILTRES -->
+        <!-- Filtres -->
         <div class="mt-8 grid gap-4">
           <div class="relative">
             <input
@@ -288,7 +272,6 @@
               >
                 <%= r.categorie || 'Autre' %>
               </span>
-              <span class="opacity-60 text-xs">#<%= i+1 %></span>
             </div>
         
             <h3
@@ -314,11 +297,7 @@
               </a>
             </div>
           </div>
-        
-          <!-- bandeau déco -->
-          <div class="h-1 bg-gradient-to-r from-[color:var(--brand-teal)] via-[#ffd9d5] to-[color:var(--brand-primary)]"></div>
-        </li>
-        
+         </li>       
         <% }) %>
       </ul>
       <% } %>
