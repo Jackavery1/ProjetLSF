@@ -9,25 +9,12 @@ router.get("/", (req, res) => {
   res.render("accueil");
 });
 
-//Router Dico
+// Router Dico
 router.get("/dictionnaire", dicoController.show);
-
-// Ajout de mot Dico
-router.post("/api/dictionnaire", dicoController.add);
-
-//Router supprimer mot Dico
-router.post("/api/dictionnaire/:id", dicoController.remove);
-
 // Router Quizz
 router.get("/quizz", quizzController.index);
 
 //Router ressources
 router.get("/ressources", ressController.index);
-
-// Ajout de ressources
-router.post("/api/ressources", ressController.add);
-
-//Router supprimer ressources
-router.post("/api/ressources/:id", ressController.remove);
 
 module.exports = router;

@@ -11,10 +11,11 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 
 // Routes
-const router = require("./routes/router");
+const routerfront = require("./routes/routerfront");
+const routerback = require("./routes/routerback");
 
 //Utilisation router
-app.use("/", router);
+app.use("/", routerfront, routerback);
 
 // Connexion MongoDB + import
 const initDB = require("./database/database");
@@ -22,5 +23,5 @@ initDB();
 
 // Connexion localhost
 app.listen(port, () => {
-  console.log(`🚀 Serveur lancé : http://localhost:${port}`);
+  console.log(`Serveur lancé : http://localhost:${port}`);
 });

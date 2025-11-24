@@ -9,13 +9,11 @@ const index = async (req, res) => {
     const ressources = await Ressource.find(filtre).lean();
     res.render("ressources", {
       ressources,
-      siteTitle: "LSF - Ressources",
     });
   } catch (err) {
     console.error("Erreur lors de la récupération des ressources :", err);
     res.render("ressources", {
       ressources: [],
-      siteTitle: "LSF - Ressources",
     });
   }
 };

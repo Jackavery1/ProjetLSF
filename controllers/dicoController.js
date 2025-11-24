@@ -5,27 +5,24 @@ const show = async (req, res) => {
   try {
     const { mot } = req.query; // mot recherché (optionnel)
 
-    // Si pas de terme recherché -> n'affiche rien (pas de find({}))
+    // Si pas de terme recherché -> ne trouve rien -> n'affiche rien
     if (!mot || !mot.trim()) {
       return res.render("dictionnaire", {
-        resultats: undefined, // laisse la vue décider de n'afficher aucun bloc
-        siteTitle: "LSF - Dictionnaire",
+        resultats: undefined,
       });
     }
 
-    // Recherche insensible à la casse si un terme est fourni
+    // Recherche insensible à la casse
     const filtre = { mot: { $regex: new RegExp(mot.trim(), "i") } };
     const resultats = await Dictionnaire.find(filtre).lean();
 
     res.render("dictionnaire", {
       resultats,
-      siteTitle: "LSF - Dictionnaire",
     });
   } catch (err) {
     console.error("Erreur lors de la récupération du dictionnaire :", err);
     res.render("dictionnaire", {
       resultats: [],
-      siteTitle: "LSF - Dictionnaire",
     });
   }
 };
@@ -55,7 +52,7 @@ const add = async (req, res) => {
       video: String(video || "").trim(),
     });
 
-    // Redirection vers la liste dictionnaire (comme ressController fait vers /ressources)
+    // Redirection vers la liste dictionnaire
     res.redirect("/dictionnaire");
   } catch (err) {
     console.error("Erreur ajout mot :", err);

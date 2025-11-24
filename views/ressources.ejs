@@ -248,7 +248,7 @@
       </div>
     </header>
 
-    <!-- LISTE DES RESSOURCES -->
+    <!-- Liste des ressources -->
     <main class="max-w-6xl mx-auto px-4 pb-16">
       <% if (!ressources || ressources.length === 0) { %>
       <div class="rounded-2xl border bg-white p-8 text-center shadow">
@@ -256,7 +256,7 @@
       </div>
       <% } else { %>
 
-      <!-- Grille -->
+      <!-- Grille des ressources -->
       <ul id="ressourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <% (ressources || []).forEach((r, i) => { %>
           <li
@@ -265,7 +265,7 @@
           data-desc="<%= (r.description || '').toLowerCase() %>"
           data-cat="<%= (r.categorie || 'Autre') %>"
         >
-          <!-- Bouton suppression (croix) -->
+          <!-- Bouton suppression-->
           <form 
             action="/api/ressources/<%= r._id %>" 
             method="POST"
@@ -371,7 +371,7 @@
         type="submit"
         class="bg-[#00a8a3] hover:bg-[#00928e] text-white px-6 py-2 rounded-lg shadow"
       >
-        ➕ Ajouter la ressource
+        Ajouter la ressource
       </button>
     </div>
   </form>
