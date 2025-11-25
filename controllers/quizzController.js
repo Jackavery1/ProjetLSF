@@ -1,44 +1,86 @@
-// controllers/quizzController.js
+const Dictionnaire = require("../models/Dictionnaire");
 
-// Format très simple et explicite
-// - mediaType: "video" | "image"
-// - src: chemin vers le fichier dans /public
-// - mode: "input" (utilisateur tape le mot) ou "qcm" (choix)
-// - answer: bonne réponse (pour input)
-// - accepted: variantes acceptées (accents/casse gérés côté front)
-// - choices: tableau de propositions (pour qcm)
-// - tip: petit indice affiché après correction
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-const questions = [
-  {
-    id: 1,
-    mediaType: "video",
-    src: "/quiz/bonjour.mp4",
-    mode: "input",
-    answer: "bonjour",
-    accepted: ["bonjour", "salut"],
-    tip: "Signe d’accueil, main ouverte devant le visage.",
-  },
-  {
-    id: 2,
-    mediaType: "video",
-    src: "/quiz/merci.mp4",
-    mode: "qcm",
-    choices: ["Bonjour", "Merci", "Pardon", "Au revoir"],
-    answerIndex: 1,
-    tip: "Main part de la bouche vers l’avant.",
-  },
-  {
-    id: 3,
-    mediaType: "image",
-    src: "/quiz/famille.jpg",
-    mode: "input",
-    answer: "famille",
-    accepted: ["famille", "la famille"],
-    tip: "Cercle formé avec les mains, notion de groupe.",
-  },
-];
+function generateQuestions(mots) {
+  if (!mots || mots.length === 0) {
+    return [];
+  }
 
-exports.index = (req, res) => {
-  res.render("quizz", { questions });
+  const questions = [];
+  const motsAvecVideo = mots.filter((m) => m.video && m.video.trim() !== "");
+
+  if (motsAvecVideo.length === 0) {
+    return [];
+  }
+
+  const motsMelanges = shuffleArray(motsAvecVideo);
+  const nombreQuestions = Math.min(10, motsMelanges.length);
+
+  for (let i = 0; i < nombreQuestions; i++) {
+    const mot = motsMelanges[i];
+    const mode = i % 2 === 0 ? "input" : "qcm";
+
+    if (mode === "input") {
+      questions.push({
+        id: i + 1,
+        mediaType: "video",
+        src: mot.video,
+        mode: "input",
+        answer: mot.mot.toLowerCase(),
+        accepted: [mot.mot.toLowerCase()],
+        tip: mot.definition || `Catégorie : ${mot.categorie || "Général"}`,
+      });
+    } else {
+      const autresMots = motsMelanges
+        .filter((m) => m._id.toString() !== mot._id.toString())
+        .map((m) => m.mot);
+      const choixIncorrects = shuffleArray(autresMots).slice(0, 3);
+      const tousLesChoix = shuffleArray([mot.mot, ...choixIncorrects]);
+      const indexCorrect = tousLesChoix.indexOf(mot.mot);
+
+      questions.push({
+        id: i + 1,
+        mediaType: "video",
+        src: mot.video,
+        mode: "qcm",
+        choices: tousLesChoix,
+        answerIndex: indexCorrect,
+        tip: mot.definition || `Catégorie : ${mot.categorie || "Général"}`,
+      });
+    }
+  }
+
+  return questions;
+}
+
+const index = async (req, res) => {
+  try {
+    const tousLesMots = await Dictionnaire.find({}).lean();
+    const questions = generateQuestions(tousLesMots);
+
+    if (questions.length === 0) {
+      return res.render("quizz", {
+        questions: [],
+        message: "Aucun mot avec vidéo disponible pour le quiz.",
+      });
+    }
+
+    res.render("quizz", { questions });
+  } catch (err) {
+    console.error("Erreur lors de la récupération du quiz :", err);
+    res.render("quizz", {
+      questions: [],
+      message: "Erreur lors du chargement du quiz.",
+    });
+  }
 };
+
+module.exports = { index };

@@ -1,0 +1,99 @@
+<!-- Barre de navigation -->
+<nav
+  class="sticky top-0 z-50 backdrop-blur bg-[#f46b5e]/95 text-white shadow"
+>
+  <div class="mx-auto max-w-7xl px-4 py-1">
+    <div class="flex h-14 items-center justify-between">
+      <!-- Logo / Titre -->
+      <h1 class="text-lg md:text-xl font-bold">
+        <a href="/" class="hover:text-white/80"
+          >Langue des Signes Française</a
+        >
+      </h1>
+
+      <!-- Liens Desktop -->
+      <ul class="hidden items-center gap-6 text-sm md:flex">
+        <li><a href="/" class="hover:opacity-90">Accueil</a></li>
+        <li>
+          <a href="/dictionnaire" class="hover:opacity-90">Dictionnaire</a>
+        </li>
+        <li><a href="/quizz" class="hover:opacity-90">Quizz</a></li>
+        <li>
+          <a href="/ressources" class="hover:opacity-90">Ressources</a>
+        </li>
+      </ul>
+
+      <!-- Menu Mobile (details/summary) -->
+      <details class="relative md:hidden group">
+        <summary
+          class="list-none cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 hover:bg-white/25"
+          aria-label="Ouvrir le menu"
+        >
+          <!-- Icône burger -->
+          <svg
+            class="h-5 w-5 group-open:hidden"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+          <!-- Icône quand open -->
+          <svg
+            class="hidden h-5 w-5 group-open:block"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </summary>
+
+        <!-- Dropdown Mobile -->
+        <div
+          class="absolute right-0 mt-2 w-56 rounded-xl bg-[#f46b5e] shadow-lg ring-1 ring-black/10"
+        >
+          <ul class="grid gap-1 p-2 text-sm">
+            <li>
+              <a href="/" class="block rounded px-3 py-2 hover:bg-white/10"
+                >Accueil</a
+              >
+            </li>
+            <li>
+              <a
+                href="/dictionnaire"
+                class="block rounded px-3 py-2 hover:bg-white/10"
+                >Dictionnaire</a
+              >
+            </li>
+            <li>
+              <a
+                href="/quizz"
+                class="block rounded px-3 py-2 hover:bg-white/10"
+                >Quizz</a
+              >
+            </li>
+            <li>
+              <a
+                href="/ressources"
+                class="block rounded px-3 py-2 hover:bg-white/10"
+                >Ressources</a
+              >
+            </li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</nav>
+

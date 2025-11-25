@@ -1,30 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Tailwind -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Import police -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
     <title>LSF - Ressources</title>
-
+    <%- include('partials/head') %>
     <style>
       :root {
         --brand-primary: #f46b5e;
         --brand-teal: #00a8a3;
         --bg: #fcf6f0;
         --ink: #2b2b2b;
-      }
-      body {
-        background-color: var(--bg);
-        color: var(--ink);
-        font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto,
-          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-          "Segoe UI Emoji";
       }
       /* jolis scrollbars (optionnel) */
       ::-webkit-scrollbar {
@@ -39,114 +23,17 @@
   </head>
 
   <body>
-    <!-- Barre de navigation -->
-    <nav
-      class="sticky top-0 z-50 backdrop-blur bg-[#f46b5e]/95 text-white shadow"
-    >
-      <div class="mx-auto max-w-7xl px-4 py-1">
-        <div class="flex h-14 items-center justify-between">
-          <!-- Logo / Titre -->
-          <h1 class="text-lg md:text-xl font-bold">
-            <a href="/" class="hover:text-white/80"
-              >Langue des Signes Française</a
-            >
-          </h1>
-
-          <!-- Liens Desktop -->
-          <ul class="hidden items-center gap-6 text-sm md:flex">
-            <li><a href="/" class="hover:opacity-90">Accueil</a></li>
-            <li>
-              <a href="/dictionnaire" class="hover:opacity-90">Dictionnaire</a>
-            </li>
-            <li><a href="/quizz" class="hover:opacity-90">Quizz</a></li>
-            <li>
-              <a href="/ressources" class="hover:opacity-90">Ressources</a>
-            </li>
-          </ul>
-
-          <!-- Menu Mobile (details/summary) -->
-          <details class="relative md:hidden group">
-            <summary
-              class="list-none cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 hover:bg-white/25"
-              aria-label="Ouvrir le menu"
-            >
-              <!-- Icône burger -->
-              <svg
-                class="h-5 w-5 group-open:hidden"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-              <!-- Icône quand open -->
-              <svg
-                class="hidden h-5 w-5 group-open:block"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </summary>
-
-            <!-- Dropdown Mobile -->
-            <div
-              class="absolute right-0 mt-2 w-56 rounded-xl bg-[#f46b5e] shadow-lg ring-1 ring-black/10"
-            >
-              <ul class="grid gap-1 p-2 text-sm">
-                <li>
-                  <a href="/" class="block rounded px-3 py-2 hover:bg-white/10"
-                    >Accueil</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="/dictionnaire"
-                    class="block rounded px-3 py-2 hover:bg-white/10"
-                    >Dictionnaire</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="/quizz"
-                    class="block rounded px-3 py-2 hover:bg-white/10"
-                    >Quizz</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="/ressources"
-                    class="block rounded px-3 py-2 hover:bg-white/10"
-                    >Ressources</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </div>
-    </nav>
+    <%- include('partials/navbar') %>
 
     <!-- header -->
     <header class="relative overflow-hidden">
       <div class="max-w-6xl mx-auto px-4 py-10 md:py-14">
         <div class="grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#00a8a3]">
               Ressources utiles pour apprendre et pratiquer la
               <span class="text-[color:var(--brand-teal)]">LSF</span>
-            </h1>
+            </h2>
             <p class="mt-3 text-[15px] text-neutral-700">
               Dictionnaires, cours, vidéos, associations, jeux, cartes… Tout au
               même endroit.
@@ -243,28 +130,28 @@
       <!-- Grille des ressources -->
       <ul id="ressourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <% (ressources || []).forEach((r, i) => { %>
-          <li
+        <li
           class="resCard group relative rounded-2xl border border-neutral-200 bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
           data-title="<%= (r.titre || '').toLowerCase() %>"
           data-desc="<%= (r.description || '').toLowerCase() %>"
           data-cat="<%= (r.categorie || 'Autre') %>"
         >
           <!-- Bouton suppression-->
-          <form 
-            action="/api/ressources/<%= r._id %>" 
+          <form
+            action="/api/ressources/<%= r._id %>"
             method="POST"
             class="absolute top-2 right-2"
             onsubmit="return confirm('Supprimer cette ressource ?');"
           >
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               class="text-gray-400 hover:text-red-600 bg-white/70 rounded-full p-1 shadow"
               title="Supprimer"
             >
               ✖
             </button>
           </form>
-        
+
           <div class="p-5">
             <div class="flex items-center justify-between gap-3">
               <span
@@ -273,19 +160,19 @@
                 <%= r.categorie || 'Autre' %>
               </span>
             </div>
-        
+
             <h3
               class="mt-3 text-lg font-bold text-[color:var(--brand-primary)] group-hover:underline underline-offset-4"
             >
               <%= r.titre %>
             </h3>
-        
+
             <% if (r.description) { %>
             <p class="mt-1.5 text-[15px] text-neutral-700 line-clamp-3">
               <%= r.description %>
             </p>
             <% } %>
-        
+
             <div class="mt-4 flex items-center justify-between">
               <a
                 href="<%= r.lien %>"
@@ -297,72 +184,68 @@
               </a>
             </div>
           </div>
-         </li>       
+        </li>
         <% }) %>
       </ul>
       <% } %>
       <!-- Formulaire d'ajout -->
-<section class="bg-white rounded-xl p-4 shadow-lg mt-12">
-  <h3 class="text-2xl font-semibold text-[#00a8a3] mb-4">
-    Ajouter une ressource
-  </h3>
-  <form
-    action="/api/ressources" 
-    method="POST"
-    class="grid grid-cols-1 md:grid-cols-2 gap-4"
-  >
-    <div>
-      <label class="block mb-1 font-medium">Titre</label>
-      <input
-        type="text"
-        name="titre"
-        required
-        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium">Description</label>
-      <input
-        type="text"
-        name="description"
-        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium">Catégorie</label>
-      <input
-        type="text"
-        name="categorie"
-        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium">Lien</label>
-      <input
-        type="url"
-        name="lien"
-        required
-        class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
-      />
-    </div>
-    <div class="md:col-span-2 text-right">
-      <button
-        type="submit"
-        class="bg-[#00a8a3] hover:bg-[#00928e] text-white px-6 py-2 rounded-lg shadow"
-      >
-        Ajouter la ressource
-      </button>
-    </div>
-  </form>
-</section>
-
+      <section class="bg-white rounded-xl p-4 shadow-lg mt-12">
+        <h3 class="text-2xl font-semibold text-[#00a8a3] mb-4">
+          Ajouter une ressource
+        </h3>
+        <form
+          action="/api/ressources"
+          method="POST"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <div>
+            <label class="block mb-1 font-medium">Titre</label>
+            <input
+              type="text"
+              name="titre"
+              required
+              class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Description</label>
+            <input
+              type="text"
+              name="description"
+              class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Catégorie</label>
+            <input
+              type="text"
+              name="categorie"
+              class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Lien</label>
+            <input
+              type="url"
+              name="lien"
+              required
+              class="w-full px-4 py-2 border rounded focus:ring-[#00a8a3]"
+            />
+          </div>
+          <div class="md:col-span-2 text-right">
+            <button
+              type="submit"
+              class="bg-[#00a8a3] hover:bg-[#00928e] text-white px-6 py-2 rounded-lg shadow"
+            >
+              Ajouter la ressource
+            </button>
+          </div>
+        </form>
+      </section>
     </main>
 
     <!-- FOOTER -->
-    <footer class="text-center text-sm text-gray-500 py-6">
-      © 2025 - Projet éducatif LSF • Réalisé par Joris
-    </footer>
-    </footer>
+    <%- include('partials/footer') %>
 
     <!-- SCRIPTS -->
     <script>
