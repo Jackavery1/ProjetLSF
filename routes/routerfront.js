@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 
 // Router Dico
 router.get("/dictionnaire", dicoController.show);
+
 // Router Quizz
 router.get("/quizz", quizzController.index);
 
