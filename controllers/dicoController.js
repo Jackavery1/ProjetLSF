@@ -3,7 +3,7 @@ const Dictionnaire = require("../models/Dictionnaire");
 // Contrôleur pour afficher le dictionnaire
 const show = async (req, res) => {
   try {
-    const { mot } = req.query; // mot recherché (optionnel)
+    const { mot } = req.query;
 
     // Si pas de terme recherché -> ne trouve rien -> n'affiche rien
     if (!mot || !mot.trim()) {
@@ -32,16 +32,16 @@ const add = async (req, res) => {
 
   // Vérification des champs obligatoires
   if (!mot || !definition) {
-    return res.status(400).send("Mot et définition sont requis.");
+    return res.status(400).send("Mot et définition requis");
   }
 
   try {
-    // Vérifie si le mot existe déjà (insensible à la casse)
+    // Vérifie si le mot existe déjà
     const existe = await Dictionnaire.findOne({
       mot: { $regex: new RegExp("^" + mot + "$", "i") },
     });
     if (existe) {
-      return res.status(409).send("Ce mot existe déjà.");
+      return res.status(409).send("Ce mot existe déjà");
     }
 
     // Création du document
@@ -56,7 +56,7 @@ const add = async (req, res) => {
     res.redirect("/dictionnaire");
   } catch (err) {
     console.error("Erreur ajout mot :", err);
-    res.status(500).send("Erreur serveur.");
+    res.status(500).send("Erreur serveur");
   }
 };
 

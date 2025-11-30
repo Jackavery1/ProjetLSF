@@ -3,21 +3,13 @@
   <head>
     <title>LSF — Quiz</title>
     <%- include('partials/head') %>
-    <style>
-      :root {
-        --brand: #f46b5e;
-        --teal: #00a8a3;
-        --bg: #fcf6f0;
-        --ink: #2b2b2b;
-      }
-    </style>
   </head>
   <body>
     <%- include('partials/navbar') %>
 
     <!-- Header -->
     <header class="max-w-5xl mx-auto px-4 py-8">
-      <h2 class="text-3xl md:text-4xl font-bold text-[#00a8a3]">Quiz  — LSF</h>
+      <h2 class="text-3xl md:text-4xl font-bold text-[#00a8a3]">Quiz — LSF</h2>
       <p class="mt-1 text-neutral-700 text-sm">
         Testez vos connaissances en LSF
       </p>
@@ -32,7 +24,7 @@
           data-qid="<%= q.id %>"
         >
           <header class="mb-3">
-            <h2 class="font-semibold text-[color:var(--brand)]">
+            <h2 class="font-semibold text-[#f46b5e]">
               Question <%= idx + 1 %>
             </h2>
           </header>
@@ -84,12 +76,12 @@
           <!-- Actions -->
           <div class="mt-4 flex items-center gap-3">
             <button
-              class="btnCheck rounded-lg bg-[color:var(--teal)] px-4 py-2 text-white text-sm font-semibold hover:bg-[#00928e]"
+              class="btnCheck rounded-lg bg-[#00a8a3] px-4 py-2 text-white text-sm font-semibold hover:bg-[#00928e]"
             >
               Vérifier
             </button>
             <button
-              class="btnReset rounded-lg border px-3 py-2 text-sm bg-white hover:border-[color:var(--teal)]"
+              class="btnReset rounded-lg border px-3 py-2 text-sm bg-white hover:border-[#00a8a3]"
             >
               Effacer
             </button>
@@ -118,7 +110,7 @@
         </p>
         <button
           id="btnResetAll"
-          class="rounded-lg border px-4 py-2 bg-white hover:border-[color:var(--teal)] text-sm"
+          class="rounded-lg border px-4 py-2 bg-white hover:border-[#00a8a3] text-sm"
         >
           Tout recommencer
         </button>

@@ -1,9 +1,11 @@
 const Ressource = require("../models/Ressources");
 
-// Contrôleurur pour afficher ressources
-const index = async (req, res) => {
+// Contrôleur pour afficher ressources
+const show = async (req, res) => {
   try {
+    // Récupérer le paramètre de recherche
     const { titre } = req.query;
+    // filtre MongoDB : si titre = filtre, sinon tout
     const filtre = titre ? { titre: { $regex: new RegExp(titre, "i") } } : {};
 
     const ressources = await Ressource.find(filtre).lean();
@@ -40,11 +42,11 @@ const add = async (req, res) => {
     res.redirect("/ressources");
   } catch (err) {
     console.error("Erreur ajout ressource :", err);
-    res.status(500).send("Erreur serveur.");
+    res.status(500).send("Erreur serveur");
   }
 };
 
-//Contrôlur pour supprimer ressources
+//Contrôleur pour supprimer ressources
 const remove = async (req, res) => {
   try {
     const document = await Ressource.findByIdAndDelete(req.params.id);
@@ -58,4 +60,4 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { index, add, remove };
+module.exports = { show, add, remove };

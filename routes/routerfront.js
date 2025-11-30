@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const dicoController = require("../controllers/dicoController");
-const quizzController = require("../controllers/quizzController");
+const quizController = require("../controllers/quizController");
 const ressController = require("../controllers/ressController");
 
 // Router Accueil
@@ -12,10 +12,10 @@ router.get("/", (req, res) => {
 // Router Dico
 router.get("/dictionnaire", dicoController.show);
 
-// Router Quizz
-router.get("/quizz", quizzController.index);
+// Router Quiz
+router.get("/quiz", quizController.show);
 
 //Router ressources
-router.get("/ressources", ressController.index);
+router.get("/ressources", ressController.show);
 
 module.exports = router;

@@ -3,23 +3,6 @@
   <head>
     <title>LSF - Ressources</title>
     <%- include('partials/head') %>
-    <style>
-      :root {
-        --brand-primary: #f46b5e;
-        --brand-teal: #00a8a3;
-        --bg: #fcf6f0;
-        --ink: #2b2b2b;
-      }
-      /* jolis scrollbars (optionnel) */
-      ::-webkit-scrollbar {
-        height: 10px;
-        width: 10px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #e7d9cc;
-        border-radius: 999px;
-      }
-    </style>
   </head>
 
   <body>
@@ -32,7 +15,7 @@
           <div>
             <h2 class="text-3xl md:text-4xl font-bold text-[#00a8a3]">
               Ressources utiles pour apprendre et pratiquer la
-              <span class="text-[color:var(--brand-teal)]">LSF</span>
+              <span class="text-[#00a8a3]">LSF</span>
             </h2>
             <p class="mt-3 text-[15px] text-neutral-700">
               Dictionnaires, cours, vidéos, associations, jeux, cartes… Tout au
@@ -41,7 +24,7 @@
           </div>
           <div class="relative">
             <div
-              class="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-[color:var(--brand-teal)]/15 via-[#ffd9d5]/50 to-[color:var(--brand-primary)]/20 blur-2xl"
+              class="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-[#00a8a3]/15 via-[#ffd9d5]/50 to-[#f46b5e]/20 blur-2xl"
             ></div>
           </div>
         </div>
@@ -50,66 +33,66 @@
         <div class="mt-8 grid gap-4">
           <div class="relative">
             <input
-              id="searchInput"
+              id="recherche"
               type="text"
               placeholder="Rechercher une ressource (ex. dictionnaire, YouTube, association)…"
-              class="w-full rounded-xl border border-neutral-300/70 bg-white px-4 py-3 shadow-sm focus:outline-none focus:ring-4 focus:ring-[color:var(--brand-teal)]/25"
+              class="w-full rounded-xl border border-neutral-300/70 bg-white px-4 py-3 shadow-sm focus:outline-none focus:ring-4 focus:ring-[#00a8a3]/25"
+              autocomplete="off"
             />
           </div>
 
           <!-- Filtres catégories -->
-          <div id="filters" class="flex flex-wrap gap-2 text-sm">
-            <!-- Donne à ces boutons data-cat pour filtrer -->
+          <div id="filtresCategories" class="flex flex-wrap gap-2 text-sm">
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="all"
             >
               Toutes
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Dictionnaires"
             >
               Dictionnaires
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Formations"
             >
               Formations
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Associations"
             >
               Associations
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Livres"
             >
               Livres
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Jeux"
             >
               Jeux
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Instagram"
             >
               Instagram
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="YouTube"
             >
               YouTube
             </button>
             <button
-              class="catBtn rounded-full border px-3 py-1.5 bg-white shadow hover:border-[color:var(--brand-teal)]"
+              class="boutonCategorie rounded-full border px-3 py-1.5 bg-white shadow hover:border-[#00a8a3]"
               data-cat="Cartes & lieux"
             >
               Cartes & lieux
@@ -128,10 +111,13 @@
       <% } else { %>
 
       <!-- Grille des ressources -->
-      <ul id="ressourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ul
+        id="grilleRessources"
+        class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         <% (ressources || []).forEach((r, i) => { %>
         <li
-          class="resCard group relative rounded-2xl border border-neutral-200 bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
+          class="carteRessource group relative rounded-2xl border border-neutral-200 bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
           data-title="<%= (r.titre || '').toLowerCase() %>"
           data-desc="<%= (r.description || '').toLowerCase() %>"
           data-cat="<%= (r.categorie || 'Autre') %>"
@@ -155,14 +141,14 @@
           <div class="p-5">
             <div class="flex items-center justify-between gap-3">
               <span
-                class="inline-flex items-center rounded-full bg-[color:var(--brand-teal)]/10 text-[color:var(--brand-teal)] px-3 py-1 text-xs font-semibold"
+                class="inline-flex items-center rounded-full bg-[#00a8a3]/10 text-[#00a8a3] px-3 py-1 text-xs font-semibold"
               >
                 <%= r.categorie || 'Autre' %>
               </span>
             </div>
 
             <h3
-              class="mt-3 text-lg font-bold text-[color:var(--brand-primary)] group-hover:underline underline-offset-4"
+              class="mt-3 text-lg font-bold text-[#f46b5e] group-hover:underline underline-offset-4"
             >
               <%= r.titre %>
             </h3>
@@ -178,7 +164,7 @@
                 href="<%= r.lien %>"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center gap-2 rounded-lg bg-[color:var(--brand-teal)] px-3 py-2 text-white text-sm font-semibold shadow hover:bg-[#00928e] focus:outline-none focus:ring-4 focus:ring-[color:var(--brand-teal)]/30"
+                class="inline-flex items-center gap-2 rounded-lg bg-[#00a8a3] px-3 py-2 text-white text-sm font-semibold shadow hover:bg-[#00928e] focus:outline-none focus:ring-4 focus:ring-[#00a8a3]/30"
               >
                 Accéder
               </a>
@@ -247,56 +233,7 @@
     <!-- FOOTER -->
     <%- include('partials/footer') %>
 
-    <!-- SCRIPTS -->
-    <script>
-      // Recherche + filtres
-      const searchInput = document.getElementById("searchInput");
-      const cards = Array.from(document.querySelectorAll(".resCard"));
-      const catBtns = Array.from(document.querySelectorAll(".catBtn"));
-      let activeCat = "all";
-
-      function applyFilters() {
-        const q = (searchInput?.value || "").trim().toLowerCase();
-        cards.forEach((card) => {
-          const title = card.dataset.title || "";
-          const desc = card.dataset.desc || "";
-          const cat = card.dataset.cat || "Autre";
-          const matchText =
-            !q ||
-            title.includes(q) ||
-            desc.includes(q) ||
-            cat.toLowerCase().includes(q);
-          const matchCat = activeCat === "all" || cat === activeCat;
-          card.style.display = matchText && matchCat ? "" : "none";
-        });
-      }
-
-      searchInput?.addEventListener("input", applyFilters);
-      catBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          activeCat = btn.dataset.cat;
-          catBtns.forEach((b) =>
-            b.classList.remove(
-              "ring-2",
-              "ring-[color:var(--brand-teal)]/50",
-              "border-[color:var(--brand-teal)]"
-            )
-          );
-          btn.classList.add(
-            "ring-2",
-            "ring-[color:var(--brand-teal)]/50",
-            "border-[color:var(--brand-teal)]"
-          );
-          applyFilters();
-        });
-      });
-      // Marquer "Toutes" active au chargement
-      const defaultBtn = document.querySelector('.catBtn[data-cat="all"]');
-      defaultBtn?.classList.add(
-        "ring-2",
-        "ring-[color:var(--brand-teal)]/50",
-        "border-[color:var(--brand-teal)]"
-      );
-    </script>
+    <!-- Filtres-->
+    <script src="/js/ressFiltres.js"></script>
   </body>
 </html>

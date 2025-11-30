@@ -61,26 +61,26 @@ function generateQuestions(mots) {
   return questions;
 }
 
-const index = async (req, res) => {
+const show = async (req, res) => {
   try {
     const tousLesMots = await Dictionnaire.find({}).lean();
     const questions = generateQuestions(tousLesMots);
 
     if (questions.length === 0) {
-      return res.render("quizz", {
+      return res.render("quiz", {
         questions: [],
         message: "Aucun mot avec vidéo disponible pour le quiz.",
       });
     }
 
-    res.render("quizz", { questions });
+    res.render("quiz", { questions });
   } catch (err) {
     console.error("Erreur lors de la récupération du quiz :", err);
-    res.render("quizz", {
+    res.render("quiz", {
       questions: [],
       message: "Erreur lors du chargement du quiz.",
     });
   }
 };
 
-module.exports = { index };
+module.exports = { show };

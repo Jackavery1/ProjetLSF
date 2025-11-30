@@ -1,19 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const dicoController = require("../controllers/dicoController");
-const quizzController = require("../controllers/quizzController");
+const quizController = require("../controllers/quizController");
 const ressController = require("../controllers/ressController");
 
 // Ajout de mot Dico
-router.post("/api/dictionnaire", dicoController.add);
+router.post("/dictionnaire", dicoController.add);
 
 //Supprimer mot Dico
-router.post("/api/dictionnaire/:id", dicoController.remove);
+router.post("/dictionnaire/:id", dicoController.remove);
 
 // Ajout de ressources
-router.post("/api/ressources", ressController.add);
+router.post("/ressources", ressController.add);
 
 //Supprimer ressources
-router.post("/api/ressources/:id", ressController.remove);
+router.post("/ressources/:id", ressController.remove);
 
 module.exports = router;

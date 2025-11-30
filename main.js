@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -14,8 +15,9 @@ app.use(express.static("public"));
 const routerfront = require("./routes/routerfront");
 const routerback = require("./routes/routerback");
 
-//Utilisation router
-app.use("/", routerfront, routerback);
+//Utilisation routers
+app.use("/", routerfront);
+app.use("/api", routerback);
 
 // Connexion MongoDB + import
 const initDB = require("./database/database");
