@@ -44,7 +44,7 @@ function appliquerLesFiltres() {
 
 recherche?.addEventListener("input", appliquerLesFiltres);
 
-// Écouter les clics sur les boutons de catégories
+// Choix catégorie
 boutonsCategories.forEach((bouton) => {
   bouton.addEventListener("click", () => {
     // Maj catégorie active

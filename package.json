@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js",
+    "dev": "nodemon main.js",
     "build:css": "postcss ./public/tailwind.css -o ./public/output.css --watch",
     "build:css:prod": "postcss ./public/tailwind.css -o ./public/output.css --minify"
   },
@@ -21,10 +23,13 @@
   },
   "homepage": "https://github.com/Jackavery1/ProjetLSF#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "mongoose": "^8.17.0"
+    "express-session": "^1.18.2",
+    "mongoose": "^8.17.0",
+    "session": "^0.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",

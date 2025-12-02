@@ -17,6 +17,51 @@
         <li>
           <a href="/ressources" class="hover:opacity-90">Ressources</a>
         </li>
+        
+        <!-- Navigation conditionnelle selon l'état de connexion -->
+        <!-- Vérification : L'utilisateur est-il connecté ? -->
+        <% if (typeof userId !== 'undefined' && userId) { %>
+          <!-- Si oui, vérifier son rôle -->
+          <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+            <!-- Si admin : Afficher le lien "Admin" vers le tableau de bord administrateur -->
+            <li>
+              <a
+                href="/admin"
+                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
+                >Admin</a
+              >
+            </li>
+          <% } else { %>
+            <!-- Si utilisateur normal : Afficher le lien "Mon profil" vers la page utilisateur -->
+            <li>
+              <a
+                href="/user"
+                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
+                >Mon profil</a
+              >
+            </li>
+          <% } %>
+          <!-- Bouton de déconnexion (visible pour tous les utilisateurs connectés) -->
+          <li>
+            <form action="/api/auth/logout" method="POST" class="inline">
+              <button
+                type="submit"
+                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
+              >
+                Déconnexion
+              </button>
+            </form>
+          </li>
+        <% } else { %>
+          <!-- Si l'utilisateur n'est pas connecté : Afficher le lien "Connexion" -->
+          <li>
+            <a
+              href="/login"
+              class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
+              >Connexion</a
+            >
+          </li>
+        <% } %>
       </ul>
 
       <!-- Menu Mobile (details/summary) -->
@@ -84,6 +129,45 @@
                 >Ressources</a
               >
             </li>
+            
+            <!-- Navigation conditionnelle pour le menu mobile (même logique que desktop) -->
+            <!-- Vérification : L'utilisateur est-il connecté ? -->
+            <% if (typeof userId !== 'undefined' && userId) { %>
+              <!-- Si oui, vérifier son rôle -->
+              <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+                <!-- Si admin : Afficher le lien "Admin" -->
+                <li>
+                  <a href="/admin" class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Admin</a
+                  >
+                </li>
+              <% } else { %>
+                <!-- Si utilisateur normal : Afficher le lien "Mon profil" -->
+                <li>
+                  <a href="/user" class="block rounded px-3 py-2 hover:bg-white/10"
+                    >Mon profil</a
+                  >
+                </li>
+              <% } %>
+              <!-- Bouton de déconnexion (visible pour tous les utilisateurs connectés) -->
+              <li>
+                <form action="/api/auth/logout" method="POST" class="inline">
+                  <button
+                    type="submit"
+                    class="w-full text-left block rounded px-3 py-2 hover:bg-white/10"
+                  >
+                    Déconnexion
+                  </button>
+                </form>
+              </li>
+            <% } else { %>
+              <!-- Si l'utilisateur n'est pas connecté : Afficher le lien "Connexion" -->
+              <li>
+                <a href="/login" class="block rounded px-3 py-2 hover:bg-white/10"
+                  >Connexion</a
+                >
+              </li>
+            <% } %>
           </ul>
         </div>
       </details>
