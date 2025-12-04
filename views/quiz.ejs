@@ -25,89 +25,55 @@
         <% questions.forEach((q, idx)=>{ %>
         <section
           class="rounded-2xl border bg-white p-4 shadow"
-          data-qid="<%= q.id %>"
+          data-id="<%= q.id %>"
         >
-          <header class="mb-3">
-            <h2 class="font-semibold text-[#f46b5e]">
-              Question <%= idx + 1 %>
-            </h2>
-          </header>
+          <h2 class="font-semibold text-[#f46b5e] mb-3">
+            Question <%= idx + 1 %>
+          </h2>
 
-          <!-- Media -->
           <div
             class="rounded-xl overflow-hidden border-2 border-[#00a8a3] shadow-md"
           >
-            <% if (q.mediaType === "video") { %>
-            <iframe
+            <video
               class="w-full aspect-video"
-              src="<%= q.src %>"
-              title="Vidéo YouTube - Question <%= idx + 1 %>"
-              frameborder="0"
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
-            <% } else { %>
-            <img class="w-full" src="<%= q.src %>" alt="Signe LSF" />
-            <% } %>
+              src="<%= q.video %>"
+              controls
+              preload="metadata"
+            >
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
           </div>
 
-          <!-- Réponse -->
           <div class="mt-4">
-            <% if (q.mode === "input") { %>
             <label class="block text-sm text-neutral-700 mb-1"
               >Ta réponse :</label
             >
             <input
               type="text"
-              class="ansInput w-full rounded-lg border px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00a8a3] hover:border-[#00a8a3] transition"
-              placeholder="Écris le mot (ex: bonjour)"
+              class="answer-input w-full rounded-lg border px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00a8a3] hover:border-[#00a8a3] transition"
+              placeholder="Écris le mot"
+              data-answer="<%= q.answer %>"
             />
-            <% } else { %>
-            <fieldset class="grid gap-2">
-              <% q.choices.forEach((ch, ci)=>{ %>
-              <label
-                class="flex items-center gap-2 rounded-lg border px-3 py-2 shadow-sm bg-white hover:bg-neutral-50 hover:border-[#00a8a3] focus-within:ring-2 focus-within:ring-[#00a8a3] transition cursor-pointer"
-              >
-                <input
-                  type="radio"
-                  class="ansChoice h-4 w-4"
-                  name="q-<%= q.id %>"
-                  value="<%= ci %>"
-                />
-                <span><%= ch %></span>
-              </label>
-              <% }) %>
-            </fieldset>
-            <% } %>
           </div>
 
-          <!-- Actions -->
           <div class="mt-4 flex items-center gap-3">
             <button
-              class="btnCheck rounded-lg bg-[#00a8a3] px-4 py-2 text-white text-sm font-semibold hover:bg-[#00928e]"
+              class="btn-check rounded-lg bg-[#00a8a3] px-4 py-2 text-white text-sm font-semibold hover:bg-[#00928e]"
             >
               Vérifier
             </button>
             <button
-              class="btnReset rounded-lg border px-3 py-2 text-sm bg-white hover:border-[#00a8a3]"
+              class="btn-reset rounded-lg border px-3 py-2 text-sm bg-white hover:border-[#00a8a3]"
             >
               Effacer
             </button>
           </div>
 
-          <!-- Résultat -->
-          <p class="mt-3 hidden text-sm font-medium" data-exp></p>
-
-          <!-- Données cachées pour simplifier le JS -->
-          <script type="application/json" data-qdata>
-            <%- JSON.stringify(q) %>
-          </script>
+          <p class="mt-3 hidden text-sm font-medium result"></p>
         </section>
         <% }) %>
       </div>
 
-      <!-- Score global -->
       <div
         class="mt-8 rounded-2xl border bg-white p-4 shadow flex items-center justify-between"
       >
@@ -115,7 +81,7 @@
           Score : <strong id="score">0 / <%= questions.length %></strong>
         </p>
         <button
-          id="btnResetAll"
+          id="btn-reset-all"
           class="rounded-lg border px-4 py-2 bg-white hover:border-[#00a8a3] text-sm"
         >
           Tout recommencer
@@ -124,155 +90,85 @@
     </main>
 
     <script>
-      // Petit utilitaire
-      const norm = (s) =>
-        (s || "")
-          .toString()
-          .trim()
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, ""); // supprime accents
-
-      const cards = Array.from(document.querySelectorAll("section[data-qid]"));
-      let score = 0,
-        total = cards.length;
+      const cards = document.querySelectorAll("section[data-id]");
+      let score = 0;
+      const total = cards.length;
 
       function updateScore() {
-        document.getElementById("score").textContent = score + " / " + total;
-        // Sauvegarder le score dans localStorage
-        localStorage.setItem("quizScore", score);
+        document.getElementById("score").textContent = `${score} / ${total}`;
       }
 
       cards.forEach((card) => {
-        const q = JSON.parse(
-          card.querySelector("script[data-qdata]").textContent
-        );
-        const exp = card.querySelector("[data-exp]");
-        const btnCheck = card.querySelector(".btnCheck");
-        const btnReset = card.querySelector(".btnReset");
-
-        let validated = false; // pour ne pas compter 2x au score
+        const input = card.querySelector(".answer-input");
+        const result = card.querySelector(".result");
+        const btnCheck = card.querySelector(".btn-check");
+        const btnReset = card.querySelector(".btn-reset");
+        const correctAnswer = input.dataset.answer;
+        let isCorrect = false;
 
         btnCheck.addEventListener("click", () => {
-          // reset styles basiques
-          exp.classList.add("hidden");
-          exp.textContent = "";
+          const userAnswer = input.value.trim().toLowerCase();
+          isCorrect = userAnswer === correctAnswer;
 
-          let ok = false;
+          input.classList.remove(
+            "ring-2",
+            "ring-red-300",
+            "ring-[#00a8a3]",
+            "bg-red-50",
+            "bg-[#00a8a3]/10",
+            "border-red-300",
+            "border-[#00a8a3]"
+          );
 
-          if (q.mode === "input") {
-            const input = card.querySelector(".ansInput");
-            const val = norm(input.value);
-            const good = norm(q.answer);
-            const accepted = (q.accepted || []).map(norm);
-            ok = val === good || accepted.includes(val);
-
-            input.classList.remove(
+          if (isCorrect) {
+            input.classList.add(
+              "ring-2",
+              "ring-[#00a8a3]",
+              "bg-[#00a8a3]/10",
+              "border-[#00a8a3]"
+            );
+            result.textContent = "✅ Correct !";
+            result.className = "mt-3 text-sm font-medium text-green-700";
+            score++;
+          } else {
+            input.classList.add(
               "ring-2",
               "ring-red-300",
-              "ring-green-300",
               "bg-red-50",
-              "bg-green-50"
+              "border-red-300"
             );
-            input.classList.add(
-              ok ? "ring-[#00a8a3]" : "ring-red-300",
-              ok ? "bg-[#00a8a3]/10" : "bg-red-50",
-              ok ? "border-[#00a8a3]" : "border-red-300",
-              "ring-2"
-            );
-          } else {
-            const picked = card.querySelector("input.ansChoice:checked");
-            const labels = Array.from(card.querySelectorAll("label"));
-            labels.forEach((l) =>
-              l.classList.remove(
-                "ring-2",
-                "ring-red-300",
-                "ring-green-300",
-                "bg-red-50",
-                "bg-green-50"
-              )
-            );
-
-            if (!picked) {
-              exp.textContent = "Choisis une réponse.";
-              exp.classList.remove("hidden");
-              return;
-            }
-            const idx = parseInt(picked.value, 10);
-            ok = idx === q.answerIndex;
-
-            if (ok) {
-              picked
-                .closest("label")
-                .classList.add("ring-2", "ring-[#00a8a3]", "bg-[#00a8a3]/10", "border-[#00a8a3]");
-            } else {
-              picked
-                .closest("label")
-                .classList.add("ring-2", "ring-red-300", "bg-red-50", "border-red-300");
-              const good = card
-                .querySelector('input.ansChoice[value="' + q.answerIndex + '"]')
-                .closest("label");
-              good.classList.add("ring-2", "ring-[#00a8a3]", "bg-[#00a8a3]/10", "border-[#00a8a3]");
-            }
+            result.textContent = "❌ Incorrect.";
+            result.className = "mt-3 text-sm font-medium text-red-700";
           }
 
-          // Explication
-          exp.textContent = ok ? "✅ Correct !" : "❌ Incorrect.";
-          exp.classList.remove("hidden");
-          exp.classList.toggle("text-green-700", ok);
-          exp.classList.toggle("text-red-700", !ok);
-
-          if (ok && !validated) {
-            validated = true;
-            score++;
-            updateScore();
-          }
+          result.classList.remove("hidden");
+          updateScore();
         });
 
         btnReset.addEventListener("click", () => {
-          // Réinitialiser la carte uniquement
-          exp.classList.add("hidden");
-          exp.textContent = "";
-          validated = false;
-          if (q.mode === "input") {
-            const input = card.querySelector(".ansInput");
-            input.value = "";
-            input.classList.remove(
-              "ring-2",
-              "ring-red-300",
-              "ring-[#00a8a3]",
-              "bg-red-50",
-              "bg-[#00a8a3]/10",
-              "border-red-300",
-              "border-[#00a8a3]"
-            );
-          } else {
-            const picked = card.querySelector("input.ansChoice:checked");
-            picked && (picked.checked = false);
-            const labels = Array.from(card.querySelectorAll("label"));
-            labels.forEach((l) =>
-              l.classList.remove(
-                "ring-2",
-                "ring-red-300",
-                "ring-[#00a8a3]",
-                "bg-red-50",
-                "bg-[#00a8a3]/10",
-                "border-red-300",
-                "border-[#00a8a3]"
-              )
-            );
+          input.value = "";
+          input.classList.remove(
+            "ring-2",
+            "ring-red-300",
+            "ring-[#00a8a3]",
+            "bg-red-50",
+            "bg-[#00a8a3]/10",
+            "border-red-300",
+            "border-[#00a8a3]"
+          );
+          result.classList.add("hidden");
+          if (isCorrect) {
+            score--;
+            isCorrect = false;
+            updateScore();
           }
         });
       });
 
-      document.getElementById("btnResetAll").addEventListener("click", () => {
-        // Reset global (visuel + score)
-        cards.forEach((card) => {
-          card.querySelector(".btnReset").click();
-        });
+      document.getElementById("btn-reset-all").addEventListener("click", () => {
+        cards.forEach((card) => card.querySelector(".btn-reset").click());
         score = 0;
         updateScore();
-        window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
       updateScore();

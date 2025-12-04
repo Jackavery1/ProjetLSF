@@ -118,7 +118,8 @@
           data-desc="<%= (r.description || '').toLowerCase() %>"
           data-cat="<%= (r.categorie || 'Autre') %>"
         >
-          <!-- Bouton suppression-->
+          <!-- Bouton suppression (uniquement pour admin) -->
+          <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
           <form
             action="/api/ressources/<%= r._id %>"
             method="POST"
@@ -133,6 +134,7 @@
               ✖
             </button>
           </form>
+          <% } %>
 
           <div class="p-5">
             <div class="flex items-center justify-between gap-3">

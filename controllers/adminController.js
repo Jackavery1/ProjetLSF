@@ -10,21 +10,40 @@ const show = async (req, res) => {
       ressources: await Ressources.countDocuments(),
     };
 
-    const utilisateursRecents = await User.find()
+    const motsRecents = await Dictionnaire.find()
       .sort({ _id: -1 })
       .limit(5)
-      .select("nom email role")
+      .select("mot categorie definition")
       .lean();
+
+    const ressourcesRecentes = await Ressources.find()
+      .sort({ _id: -1 })
+      .limit(5)
+      .select("titre categorie description")
+      .lean();
+
+    const categoriesMots = await Dictionnaire.distinct("categorie");
+    const categoriesRessources = await Ressources.distinct("categorie");
 
     res.render("users/admin", {
       stats,
-      utilisateursRecents,
+      motsRecents,
+      ressourcesRecentes,
+      categoriesMots,
+      categoriesRessources,
+      userId: req.session.userId,
+      userRole: req.session.userRole,
     });
   } catch (err) {
     console.error("Erreur récupération données admin :", err);
     res.render("users/admin", {
       stats: { utilisateurs: 0, mots: 0, ressources: 0 },
-      utilisateursRecents: [],
+      motsRecents: [],
+      ressourcesRecentes: [],
+      categoriesMots: [],
+      categoriesRessources: [],
+      userId: req.session.userId,
+      userRole: req.session.userRole,
     });
   }
 };

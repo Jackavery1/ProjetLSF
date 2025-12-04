@@ -9,7 +9,10 @@ const { requireAuth, requireAdmin } = require("../middleware/auth");
 
 // Router Accueil
 router.get("/", (req, res) => {
-  res.render("accueil");
+  res.render("accueil", {
+    userId: req.session.userId,
+    userRole: req.session.userRole,
+  });
 });
 
 // Router Dico
@@ -23,12 +26,18 @@ router.get("/ressources", ressController.show);
 
 // Router Login
 router.get("/login", (req, res) => {
-  res.render("users/login");
+  res.render("users/login", {
+    userId: req.session.userId,
+    userRole: req.session.userRole,
+  });
 });
 
 // Router Register
 router.get("/register", (req, res) => {
-  res.render("users/register");
+  res.render("users/register", {
+    userId: req.session.userId,
+    userRole: req.session.userRole,
+  });
 });
 
 // Router User x requireAuth

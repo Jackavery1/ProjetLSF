@@ -1,21 +1,30 @@
 const Ressource = require("../models/Ressources");
 
+// Regex caractères spéciaux
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 // Contrôleur pour afficher ressources
 const show = async (req, res) => {
   try {
     // Récupérer le paramètre de recherche
     const { titre } = req.query;
     // filtre MongoDB : si titre = filtre, sinon tout
-    const filtre = titre ? { titre: { $regex: new RegExp(titre, "i") } } : {};
+    const filtre = titre
+      ? { titre: { $regex: new RegExp(escapeRegex(titre.trim()), "i") } }
+      : {};
 
     const ressources = await Ressource.find(filtre).lean();
     res.render("ressources", {
       ressources,
+      userId: req.session.userId,
+      userRole: req.session.userRole,
     });
   } catch (err) {
     console.error("Erreur lors de la récupération des ressources :", err);
     res.render("ressources", {
       ressources: [],
+      userId: req.session.userId,
+      userRole: req.session.userRole,
     });
   }
 };
@@ -27,8 +36,9 @@ const add = async (req, res) => {
     return res.status(400).send("Titre et lien sont requis.");
 
   try {
+    // Vérifie si la ressource existe déjà
     const existe = await Ressource.findOne({
-      titre: { $regex: new RegExp("^" + titre + "$", "i") },
+      titre: { $regex: new RegExp("^" + escapeRegex(titre.trim()) + "$", "i") },
     });
     if (existe) return res.status(409).send("Cette ressource existe déjà.");
 

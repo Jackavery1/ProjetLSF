@@ -17,6 +17,8 @@ const requireAdmin = async (req, res, next) => {
     if (!user || user.role !== "admin") {
       return res.status(403).render("error", {
         message: "Accès refusé. Vous devez être administrateur.",
+        userId: req.session.userId,
+        userRole: req.session.userRole,
       });
     }
     next();

@@ -1,15 +1,5 @@
 body {
   background-color: #fcf6f0;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", sans-serif, Inter;
   color: #2b2b2b;
-}
-
-::-webkit-scrollbar {
-  height: 10px;
-  width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #e7d9cc;
-  border-radius: 999px;
 }

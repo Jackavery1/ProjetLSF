@@ -35,6 +35,40 @@
         </button>
       </form>
 
+      <!-- Cartes des catégories -->
+      <% if (typeof categoriesAvecMots !== 'undefined' &&
+      categoriesAvecMots.length > 0 && typeof resultats === 'undefined') { %>
+      <section class="mb-10">
+        <h3 class="text-2xl font-bold text-center text-[#00a8a3] mb-6">
+          Catégories de mots
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <% categoriesAvecMots.forEach((categorie, index) => { %> <% const
+          isJaune = index % 2 === 1; %>
+          <div
+            class="<%= isJaune ? 'bg-[#fdd049] text-gray-800' : 'bg-[#00a8a3] text-white' %> rounded-xl p-4 text-center shadow"
+          >
+            <h4 class="text-lg font-bold mb-3"><%= categorie.nom %></h4>
+            <div class="mt-3 text-left">
+              <ul class="space-y-1.5">
+                <% categorie.mots.forEach(mot => { %>
+                <li class="text-sm">
+                  <a
+                    href="/dictionnaire?mot=<%= encodeURIComponent(mot) %>"
+                    class="hover:underline"
+                  >
+                    • <%= mot %>
+                  </a>
+                </li>
+                <% }); %>
+              </ul>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </section>
+      <% } %>
+
       <!-- Résultats -->
       <% if (Array.isArray(resultats) && resultats.length > 0) { %>
       <h3 class="text-xl font-semibold mb-6 text-gray-800">
@@ -51,8 +85,25 @@
         </div>
 
         <div
-          class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden border-2 border-[#00a8a3]"
+          class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden border-2 border-[#00a8a3] relative"
         >
+          <!-- Bouton suppression admin -->
+          <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+          <form
+            action="/api/dictionnaire/<%= mot._id %>"
+            method="POST"
+            class="absolute top-2 right-2 z-10"
+            onsubmit="return confirm('Supprimer ce mot et sa vidéo ?');"
+          >
+            <button
+              type="submit"
+              class="text-gray-400 hover:text-red-600 bg-white/70 rounded-full p-1 shadow"
+              title="Supprimer"
+            >
+              ✖
+            </button>
+          </form>
+          <% } %>
           <iframe
             class="w-full aspect-video"
             src="<%= mot.video %>"
