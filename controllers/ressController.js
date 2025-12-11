@@ -29,24 +29,28 @@ const show = async (req, res) => {
   }
 };
 
-// Contrôleur pour ajouter ressources
 const add = async (req, res) => {
-  const { titre, description, lien, categorie } = req.body;
-  if (!titre || !lien)
-    return res.status(400).send("Titre et lien sont requis.");
-
   try {
-    // Vérifie si la ressource existe déjà
+    const validation = validateRequest(schemaAddRessource, req);
+
+    if (validation.errors) {
+      return res.status(400).send(validation.errors[0]);
+    }
+
+    const { titre, description, lien, categorie } = validation.value;
+
     const existe = await Ressource.findOne({
-      titre: { $regex: new RegExp("^" + escapeRegex(titre.trim()) + "$", "i") },
+      titre: { $regex: new RegExp("^" + escapeRegex(titre) + "$", "i") },
     });
-    if (existe) return res.status(409).send("Cette ressource existe déjà.");
+    if (existe) {
+      return res.status(409).send("Cette ressource existe déjà");
+    }
 
     await Ressource.create({
-      titre: String(titre).trim(),
-      description: String(description || "").trim(),
-      lien: String(lien).trim(),
-      categorie: String(categorie || "Général").trim(),
+      titre,
+      description: description || "",
+      lien,
+      categorie: categorie || "Général",
     });
 
     res.redirect("/ressources");

@@ -1,9 +1,11 @@
 const User = require("../models/User");
 
+//Contrôleur de connexion
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    //Vérification des champs obligatoires
     if (!email || !password) {
       return res.render("users/login", {
         error: "Email et mot de passe requis",
@@ -12,7 +14,7 @@ const login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
       return res.render("users/login", {
         error: "Identifiants incorrects",
@@ -38,6 +40,7 @@ const login = async (req, res) => {
   }
 };
 
+//Contrôleur d'inscription
 const register = async (req, res) => {
   try {
     const { nom, email, password } = req.body;
@@ -50,7 +53,7 @@ const register = async (req, res) => {
       });
     }
 
-    const existe = await User.findOne({ email: email.toLowerCase() });
+    const existe = await User.findOne({ email });
     if (existe) {
       return res.render("users/register", {
         error: "Cet email est déjà utilisé",
@@ -61,7 +64,7 @@ const register = async (req, res) => {
 
     const user = await User.create({
       nom,
-      email: email.toLowerCase(),
+      email,
       password,
     });
 
@@ -86,6 +89,7 @@ const register = async (req, res) => {
   }
 };
 
+//Contrôleur de déconnexion
 const logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) {

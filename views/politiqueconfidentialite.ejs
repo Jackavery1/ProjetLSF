@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>Politique de confidentialité - LSF</title>
+    <%- include('partials/head') %>
+  </head>
+
+  <body>
+    <%- include('partials/navbar') %>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+      <h1 class="text-3xl font-bold text-[#00a8a3] mb-8">Politique de confidentialité</h1>
+      
+      <div class="space-y-6 text-gray-700">
+        <section>
+          <h2 class="text-xl font-semibold mb-2">Données collectées</h2>
+          <p>Les données suivantes sont collectées lors de l'inscription :</p>
+          <ul class="list-disc list-inside mt-2 space-y-1">
+            <li>Nom d'utilisateur</li>
+            <li>Adresse email</li>
+            <li>Mot de passe (haché de manière sécurisée)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-2">Utilisation des données</h2>
+          <p>Vos données sont utilisées uniquement pour :</p>
+          <ul class="list-disc list-inside mt-2 space-y-1">
+            <li>Gérer votre compte utilisateur</li>
+            <li>Vous permettre d'ajouter du contenu au dictionnaire et aux ressources</li>
+            <li>Améliorer l'expérience utilisateur</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-2">Sécurité</h2>
+          <p>Vos mots de passe sont hachés avec bcrypt avant stockage. Les sessions sont sécurisées.</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-2">Vos droits</h2>
+          <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles.</p>
+        </section>
+      </div>
+
+      <div class="mt-8">
+        <a href="/" class="text-[#00a8a3] hover:underline">← Retour à l'accueil</a>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>
+

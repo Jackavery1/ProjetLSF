@@ -1,5 +1,6 @@
 const User = require("../models/User");
 
+//Vérifie si l'utilisateur est connecté
 const requireAuth = async (req, res, next) => {
   if (!req.session.userId) {
     return res.redirect("/login");
@@ -7,6 +8,7 @@ const requireAuth = async (req, res, next) => {
   next();
 };
 
+//Vérifie si l'utilisateur est administrateur
 const requireAdmin = async (req, res, next) => {
   if (!req.session.userId) {
     return res.redirect("/login");
@@ -29,4 +31,3 @@ const requireAdmin = async (req, res, next) => {
 };
 
 module.exports = { requireAuth, requireAdmin };
-

@@ -1,11 +1,13 @@
 const Dictionnaire = require("../models/Dictionnaire");
 
+//Contrôleur pour afficher le quiz
 const show = async (req, res) => {
   try {
     const mots = await Dictionnaire.find({ video: { $exists: true, $ne: "" } })
       .limit(10)
       .lean();
 
+    //Création des questions
     const questions = mots.map((mot, i) => ({
       id: i + 1,
       video: mot.video,

@@ -1,6 +1,7 @@
 const Dictionnaire = require("../models/Dictionnaire");
+const { schemaAddMot } = require("../validators/schemas");
+const { validateRequest } = require("../middleware/validate");
 
-//Regex caractères spéciaux
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // Contrôleur pour afficher le dictionnaire
@@ -13,11 +14,14 @@ const show = async (req, res) => {
     const categoriesAvecMots = [];
 
     for (const categorie of categories) {
+      //Vérification de la catégorie
       if (categorie && categorie.trim() !== "") {
+        //Récupération des mots de la catégorie
         const mots = await Dictionnaire.find({ categorie })
           .limit(3)
           .select("mot")
           .lean();
+
         categoriesAvecMots.push({
           nom: categorie,
           mots: mots.map((m) => m.mot),
@@ -59,31 +63,29 @@ const show = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const { mot, definition, categorie, video } = req.body;
-
-  // Vérification des champs obligatoires
-  if (!mot || !definition) {
-    return res.status(400).send("Mot et définition requis");
-  }
-
   try {
-    // Vérifie si le mot existe déjà
+    const validation = validateRequest(schemaAddMot, req);
+
+    if (validation.errors) {
+      return res.status(400).send(validation.errors[0]);
+    }
+
+    const { mot, definition, categorie, video } = validation.value;
+
     const existe = await Dictionnaire.findOne({
-      mot: { $regex: new RegExp("^" + escapeRegex(mot.trim()) + "$", "i") },
+      mot: { $regex: new RegExp("^" + escapeRegex(mot) + "$", "i") },
     });
     if (existe) {
       return res.status(409).send("Ce mot existe déjà");
     }
 
-    // Création du document
     await Dictionnaire.create({
-      mot: String(mot).trim(),
-      definition: String(definition || "").trim(),
-      categorie: String(categorie || "Général").trim(),
-      video: String(video || "").trim(),
+      mot,
+      definition,
+      categorie: categorie || "Général",
+      video: video || "",
     });
 
-    // Redirection vers la liste dictionnaire
     res.redirect("/dictionnaire");
   } catch (err) {
     console.error("Erreur ajout mot :", err);

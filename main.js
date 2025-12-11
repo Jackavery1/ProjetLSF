@@ -28,7 +28,6 @@ const routerback = require("./routes/routerback");
 //Utilisation routers
 app.use("/", routerfront);
 app.use("/api", routerback);
-
 // Connexion MongoDB + import
 const initDB = require("./database/database");
 initDB();

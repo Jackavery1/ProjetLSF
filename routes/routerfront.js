@@ -46,4 +46,20 @@ router.get("/user", requireAuth, userController.show);
 // Router Admin x requireAuth x requireAdmin
 router.get("/admin", requireAuth, requireAdmin, adminController.show);
 
+// Router Mentions légales
+router.get("/mentions-legales", (req, res) => {
+  res.render("mentionslegales", {
+    userId: req.session.userId,
+    userRole: req.session.userRole,
+  });
+});
+
+// Router Politique de confidentialité
+router.get("/politique-confidentialite", (req, res) => {
+  res.render("politiqueconfidentialite", {
+    userId: req.session.userId,
+    userRole: req.session.userRole,
+  });
+});
+
 module.exports = router;

@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Dictionnaire = require("../models/Dictionnaire");
 const Ressources = require("../models/Ressources");
 
+//Contrôleur du tableau de bord admin
 const show = async (req, res) => {
   try {
     const stats = {
@@ -10,6 +11,7 @@ const show = async (req, res) => {
       ressources: await Ressources.countDocuments(),
     };
 
+    //Récupération des mots et ressources les plus récents
     const motsRecents = await Dictionnaire.find()
       .sort({ _id: -1 })
       .limit(5)
@@ -22,6 +24,7 @@ const show = async (req, res) => {
       .select("titre categorie description")
       .lean();
 
+    //Récupération des catégories de mots et ressources
     const categoriesMots = await Dictionnaire.distinct("categorie");
     const categoriesRessources = await Ressources.distinct("categorie");
 
