@@ -1,6 +1,4 @@
 const Dictionnaire = require("../models/Dictionnaire");
-const { schemaAddMot } = require("../validators/schemas");
-const { validateRequest } = require("../middleware/validate");
 
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -64,13 +62,11 @@ const show = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    const validation = validateRequest(schemaAddMot, req);
+    const { mot, definition, categorie, video } = req.body;
 
-    if (validation.errors) {
-      return res.status(400).send(validation.errors[0]);
+    if (!mot || !definition) {
+      return res.status(400).send("Le mot et la définition sont requis");
     }
-
-    const { mot, definition, categorie, video } = validation.value;
 
     const existe = await Dictionnaire.findOne({
       mot: { $regex: new RegExp("^" + escapeRegex(mot) + "$", "i") },

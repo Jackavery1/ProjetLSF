@@ -31,13 +31,11 @@ const show = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    const validation = validateRequest(schemaAddRessource, req);
+    const { titre, description, lien, categorie } = req.body;
 
-    if (validation.errors) {
-      return res.status(400).send(validation.errors[0]);
+    if (!titre || !lien) {
+      return res.status(400).send("Le titre et le lien sont requis");
     }
-
-    const { titre, description, lien, categorie } = validation.value;
 
     const existe = await Ressource.findOne({
       titre: { $regex: new RegExp("^" + escapeRegex(titre) + "$", "i") },
